@@ -1,4 +1,4 @@
-package com.example.Web.System.repo;
+package com.example.Web.System.repository;
 
 import com.example.Web.System.entity.Issue;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @EnableJpaRepositories
 @Repository
-public interface IssueRepo extends JpaRepository<Issue, Long> {
+public interface IssueRepository extends JpaRepository<Issue, Long> {
 }

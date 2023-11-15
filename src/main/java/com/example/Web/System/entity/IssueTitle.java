@@ -1,10 +1,18 @@
 package com.example.Web.System.entity;
 
 import javafx.css.Styleable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name = "IssueTitle")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+
 public class IssueTitle {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,7 +24,5 @@ public class IssueTitle {
     private Category category;
     @Column(name = "active_state", columnDefinition = "TINYINT default 1")
     private boolean activeState;
-
-
 
 }

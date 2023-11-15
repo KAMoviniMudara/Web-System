@@ -3,8 +3,7 @@ package com.example.Web.System.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
+
 
 import javax.persistence.*;
 
@@ -24,4 +23,7 @@ public class Category {
 
     @Column(name = "active_state", columnDefinition = "TINYINT default 1")
     private boolean activeState;
+
+
+
 }

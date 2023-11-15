@@ -1,54 +1,54 @@
 package com.example.Web.System.service.impl;
 
-import com.example.Web.System.repo.CategoryRepo;
-import com.example.Web.System.repo.IssueTitleRepo;
+import com.example.Web.System.entity.Category;
+import com.example.Web.System.entity.IssueTitle;
+import com.example.Web.System.repository.CategoryRepository;
+import com.example.Web.System.repository.IssueTitleRepository;
 import com.example.Web.System.service.IssueTitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 @Service
 public class IssueTitleServiceImpl implements IssueTitleService {
     @Autowired
-    private IssueTitleRepo issueTitleRepo;
+    private IssueTitleRepository issueTitleRepository;
     @Autowired
-    private CategoryRepo categoryRepo;
+    private CategoryRepository categoryRepository;
 
     @Override
-    public IssueTitle addIssueTitle(IssueTitle issueTitle) {
-        Category existingCategory = categoryRepository.findById(issueTitle.getCategory().getId()).orElse(null);
+    public IssueTitle addIssueTitle(String title, Long categoryId) {
+        Category existingCategory = categoryRepository.findById(categoryId).orElse(null);
         if (existingCategory == null) {
             throw new IllegalArgumentException("Category does not exist.");
         }
 
-        issueTitle.setCategory(existingCategory);
+        IssueTitle newIssueTitle = new IssueTitle();
+        newIssueTitle.setTitle(title);
+        newIssueTitle.setCategory(existingCategory);
 
-        return issueTitleRepository.save(issueTitle);
+        return issueTitleRepository.save(newIssueTitle);
     }
 
     @Override
-    public IssueTitle updateIssueTitle(IssueTitle issueTitle) {
-
-        Category existingCategory = categoryRepository.findById(issueTitle.getCategory().getId()).orElse(null);
-        if (existingCategory == null) {
-            throw new IllegalArgumentException("Category does not exist.");
+    public IssueTitle updateIssueTitle(String currentTitle, String newTitle, Long newCategoryId) {
+        Category newCategory = categoryRepository.findById(newCategoryId).orElse(null);
+        if (newCategory == null) {
+            throw new IllegalArgumentException("New category does not exist.");
         }
 
-
-        IssueTitle existingIssueTitle = issueTitleRepository.findById(issueTitle.getId()).orElse(null);
+        IssueTitle existingIssueTitle = (IssueTitle) issueTitleRepository.findByTitle(currentTitle).orElse(null);
         if (existingIssueTitle == null) {
             throw new IllegalArgumentException("Issue title does not exist.");
         }
 
-        existingIssueTitle.setTitle(issueTitle.getTitle());
-        existingIssueTitle.setCategory(existingCategory);
+        existingIssueTitle.setTitle(newTitle);
+        existingIssueTitle.setCategory(newCategory);
 
         return issueTitleRepository.save(existingIssueTitle);
     }
 
     @Override
-    public void deactivateIssueTitle(Long issueTitleId) {
-
-        IssueTitle issueTitle = issueTitleRepository.findById(issueTitleId).orElse(null);
+    public void deactivateIssueTitle(String title) {
+        IssueTitle issueTitle = (IssueTitle) issueTitleRepository.findByTitle(title).orElse(null);
         if (issueTitle == null) {
             throw new IllegalArgumentException("Issue title does not exist.");
         }
