@@ -1,59 +1,72 @@
 package com.example.Web.System.service.impl;
 
-import com.example.Web.System.entity.Category;
+import com.example.Web.System.dto.IssueTitleDTO;
 import com.example.Web.System.entity.IssueTitle;
-import com.example.Web.System.repository.CategoryRepository;
 import com.example.Web.System.repository.IssueTitleRepository;
 import com.example.Web.System.service.IssueTitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
 @Service
 public class IssueTitleServiceImpl implements IssueTitleService {
+
     @Autowired
     private IssueTitleRepository issueTitleRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @Override
-    public IssueTitle addIssueTitle(String title, Long categoryId) {
-        Category existingCategory = categoryRepository.findById(categoryId).orElse(null);
-        if (existingCategory == null) {
-            throw new IllegalArgumentException("Category does not exist.");
-        }
-
-        IssueTitle newIssueTitle = new IssueTitle();
-        newIssueTitle.setTitle(title);
-        newIssueTitle.setCategory(existingCategory);
-
-        return issueTitleRepository.save(newIssueTitle);
+    public IssueTitleDTO addIssueTitle(IssueTitleDTO issueTitleDTO) {
+        IssueTitle issueTitle = convertToEntity(issueTitleDTO);
+        IssueTitle savedIssueTitle = issueTitleRepository.save(issueTitle);
+        return convertToDTO(savedIssueTitle);
     }
 
     @Override
-    public IssueTitle updateIssueTitle(String currentTitle, String newTitle, Long newCategoryId) {
-        Category newCategory = categoryRepository.findById(newCategoryId).orElse(null);
-        if (newCategory == null) {
-            throw new IllegalArgumentException("New category does not exist.");
+    public IssueTitleDTO updateIssueTitleByTitle(String title, IssueTitleDTO issueTitleDTO) {
+        Optional<IssueTitle> existingIssueTitleOptional = issueTitleRepository.findByTitle(title);
+        if (existingIssueTitleOptional.isPresent()) {
+            IssueTitle existingIssueTitle = existingIssueTitleOptional.get();
+            existingIssueTitle.setTitle(issueTitleDTO.getTitle());
+            existingIssueTitle.setActiveState(issueTitleDTO.isActiveState());
+            IssueTitle updatedIssueTitle = issueTitleRepository.save(existingIssueTitle);
+            return convertToDTO(updatedIssueTitle);
         }
+        return null; // Handle case where issue title with given title doesn't exist
+    }
 
-        IssueTitle existingIssueTitle = (IssueTitle) issueTitleRepository.findByTitle(currentTitle).orElse(null);
-        if (existingIssueTitle == null) {
-            throw new IllegalArgumentException("Issue title does not exist.");
-        }
+    @Override
+    public void deactivateIssueTitleByTitle(String title) {
+        Optional<IssueTitle> existingIssueTitleOptional = issueTitleRepository.findByTitle(title);
+        existingIssueTitleOptional.ifPresent(existingIssueTitle -> {
+            existingIssueTitle.setActiveState(false);
+            issueTitleRepository.save(existingIssueTitle);
+        });
+    }
 
-        existingIssueTitle.setTitle(newTitle);
-        existingIssueTitle.setCategory(newCategory);
-
-        return issueTitleRepository.save(existingIssueTitle);
+    @Override
+    public IssueTitleDTO updateIssueTitle(String title, IssueTitleDTO issueTitleDTO) {
+        return null;
     }
 
     @Override
     public void deactivateIssueTitle(String title) {
-        IssueTitle issueTitle = (IssueTitle) issueTitleRepository.findByTitle(title).orElse(null);
-        if (issueTitle == null) {
-            throw new IllegalArgumentException("Issue title does not exist.");
-        }
 
-        issueTitle.setActiveState(false);
-        issueTitleRepository.save(issueTitle);
+    }
+
+    // Other methods...
+
+    private IssueTitle convertToEntity(IssueTitleDTO issueTitleDTO) {
+        IssueTitle issueTitle = new IssueTitle();
+        issueTitle.setTitle(issueTitleDTO.getTitle());
+        issueTitle.setActiveState(issueTitleDTO.isActiveState());
+        return issueTitle;
+    }
+
+    private IssueTitleDTO convertToDTO(IssueTitle issueTitle) {
+        IssueTitleDTO issueTitleDTO = new IssueTitleDTO();
+        issueTitleDTO.setTitle(issueTitle.getTitle());
+        issueTitleDTO.setActiveState(issueTitle.isActiveState());
+        return issueTitleDTO;
     }
 }

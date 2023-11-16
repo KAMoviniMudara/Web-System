@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @EnableJpaRepositories
 @Repository
+
 public interface IssueTitleRepository extends JpaRepository<IssueTitle, Long> {
-    Optional<Object> findByTitle(String currentTitle);
+    Optional<IssueTitle> findByTitle(String title);
 }

@@ -1,6 +1,5 @@
 package com.example.Web.System.entity;
 
-import javafx.css.Styleable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
