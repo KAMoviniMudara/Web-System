@@ -26,5 +26,5 @@ public class IssueController {
         IssueDTO addedIssue = issueService.addIssue(issueDTO);
         return new ResponseEntity<>(addedIssue, HttpStatus.CREATED);
     }
-    // Other endpoints as needed
+    // Other endpoints
 }
