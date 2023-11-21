@@ -1,7 +1,5 @@
 package com.example.Web.System.entity;
 
-import com.example.Web.System.entity.enums.ActionTakenByEnum;
-import com.example.Web.System.entity.enums.InformedByEnum;
 import com.example.Web.System.entity.enums.LocationEnum;
 import com.example.Web.System.entity.enums.StatusEnum;
 import lombok.AllArgsConstructor;
@@ -39,11 +37,13 @@ public class Issue {
     private String startTime;
     private String endTime;
 
-    @Enumerated(EnumType.STRING)
-    private InformedByEnum informedBy;
+    @ManyToOne
+    @JoinColumn(name = "informed_by_user_id")
+    private User informedByUser;
 
-    @Enumerated(EnumType.STRING)
-    private ActionTakenByEnum actionTakenBy;
+    @ManyToOne
+    @JoinColumn(name = "action_taken_by_user_id")
+    private User actionTakenByUser;
 
     @Column(name = "duration")
     private Time duration;

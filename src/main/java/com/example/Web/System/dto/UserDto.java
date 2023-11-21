@@ -1,36 +1,27 @@
-package com.example.Web.System.entity;
+package com.example.Web.System.dto;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name = "user")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id", length = 45)
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class UserDto {
+    private static final Logger logger = LoggerFactory.getLogger(UserDto.class);
+
     private int userId;
-
-    @Column(name = "user_name", length = 255)
     private String userName;
-
-    @Column(name = "email", length = 255)
     private String email;
-
-    @Column(name = "password", length = 255)
     private String password;
-
-    @Column(name = "role", length = 255)
     private String role;
 
-    public User(int userId, String userName, String email, String password, String role) {
+    public UserDto(int userId, String userName, String email, String password, String role) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.password = password;
-        this.role = role; // Initialize the 'role' with the provided parameter.
+        this.role = role;
     }
 
-    public User() {
+    public UserDto() {
     }
 
     public int getUserId() {
@@ -75,7 +66,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDto{" +
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
@@ -83,5 +74,4 @@ public class User {
                 ", role='" + role + '\'' +
                 '}';
     }
-
 }

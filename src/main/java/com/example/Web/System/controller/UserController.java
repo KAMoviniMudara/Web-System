@@ -1,8 +1,8 @@
 package com.example.Web.System.controller;
 
 import com.example.Web.System.Response.LoginResponse;
-import com.example.Web.System.dto.LoginDTO;
-import com.example.Web.System.dto.UserDTO;
+import com.example.Web.System.dto.LoginDto;
+import com.example.Web.System.dto.UserDto;
 import com.example.Web.System.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,38 +23,38 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserDTO userDTO) {
-        logger.info("Received UserDto email: {}", userDTO.getEmail());
-        logger.info("Received UserDto role: {}", userDTO.getRole());
+    public ResponseEntity<String> registerUser(@RequestBody UserDto userDto) {
+        logger.info("Received UserDto email: {}", userDto.getEmail());
+        logger.info("Received UserDto role: {}", userDto.getRole());
 
-        String userName = userService.addUser(userDTO);
+        String userName = userService.addUser(userDto);
         logger.info("User registered: {}", userName);
 
         return ResponseEntity.ok("Registration successful for user: " + userName);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginDTO loginDTO) {
-        logger.info("Received login request for email: {}", loginDTO.getEmail());
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginDto loginDto) {
+        logger.info("Received login request for email: {}", loginDto.getEmail());
 
-        LoginResponse loginResponse = userService.loginUser(loginDTO);
+        LoginResponse loginResponse = userService.loginUser(loginDto);
         if (loginResponse.isStatus()) {
-            logger.info("User login successful for email: {}", loginDTO.getEmail());
+            logger.info("User login successful for email: {}", loginDto.getEmail());
         } else {
-            logger.warn("User login failed for email: {}", loginDTO.getEmail());
+            logger.warn("User login failed for email: {}", loginDto.getEmail());
         }
 
         return ResponseEntity.ok(loginResponse);
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserDTO> getUserProfile(@AuthenticationPrincipal Principal principal) {
+    public ResponseEntity<UserDto> getUserProfile(@AuthenticationPrincipal Principal principal) {
         if (principal != null) {
             String userEmail = principal.getName();
             logger.info("Retrieved user profile for email: {}", userEmail);
 
-            UserDTO userDTO = userService.getUserByEmail(userEmail);
-            return ResponseEntity.ok(userDTO);
+            UserDto userDto = userService.getUserByEmail(userEmail);
+            return ResponseEntity.ok(userDto);
         } else {
             logger.warn("User profile request without authenticated principal");
             return ResponseEntity.badRequest().body(null);
