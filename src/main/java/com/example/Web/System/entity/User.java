@@ -1,5 +1,6 @@
 package com.example.Web.System.entity;
 
+
 import javax.persistence.*;
 
 @Entity
@@ -27,7 +28,7 @@ public class User {
         this.userName = userName;
         this.email = email;
         this.password = password;
-        this.role = role; // Initialize the 'role' with the provided parameter.
+        this.role = role;
     }
 
     public User() {
@@ -83,5 +84,4 @@ public class User {
                 ", role='" + role + '\'' +
                 '}';
     }
-
 }

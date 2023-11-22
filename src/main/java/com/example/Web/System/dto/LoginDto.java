@@ -1,7 +1,5 @@
 package com.example.Web.System.dto;
 
-
-
 public class LoginDto {
     private String email;
     private String password;
@@ -48,4 +46,5 @@ public class LoginDto {
                 ", role='" + role + '\'' +
                 '}';
     }
+
 }
