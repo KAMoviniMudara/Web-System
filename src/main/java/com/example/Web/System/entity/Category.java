@@ -24,6 +24,8 @@ public class Category {
     @Column(name = "active_state", columnDefinition = "TINYINT default 1")
     private boolean activeState;
 
-
+    public void deactivate() {
+        this.activeState = false;
+    }
 
 }

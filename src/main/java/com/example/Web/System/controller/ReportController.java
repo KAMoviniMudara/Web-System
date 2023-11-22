@@ -1,4 +1,4 @@
 package com.example.Web.System.controller;
 
-public class ReportPackage {
+public class ReportController {
 }

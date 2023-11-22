@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 public interface CategoryService {
     Category addCategory(Category category);
 
-    void deactivateCategoryByName(String categoryName);
+    String deactivateCategoryByName(String categoryName);
 }
 
 

@@ -6,39 +6,34 @@ import com.example.Web.System.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
+    private final CategoryRepository categoryRepository;
+
     @Autowired
-    private CategoryRepository categoryRepository;
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public Category addCategory(Category category) {
         return categoryRepository.save(category);
     }
 
-        @Override
-        public void deactivateCategoryByName(String categoryName) {
-            try {
-                Category existingCategory = categoryRepository.findByCategoryName(categoryName);
-                if (existingCategory == null) {
-                    throw new IllegalArgumentException("Category does not exist.");
-                }
-
-                existingCategory.setActiveState(false);
-                categoryRepository.save(existingCategory);
-            } catch (IllegalArgumentException e) {
-                throw e;
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("Error deactivating category. Details: " + e.getMessage(), e);
+    @Override
+    public String deactivateCategoryByName(String customerName) {
+        try {
+            Category category = categoryRepository.findByCategoryName(customerName);
+            if (category == null) {
+                return "Category Not Found";
             }
+            category.setActiveState(false);
+            categoryRepository.save(category);
+            return "Category Deactivated";
+        } catch (Exception e) {
+            return "Deactivation Failed";
         }
     }
-
-
-
-
-
-
-
-
+}
