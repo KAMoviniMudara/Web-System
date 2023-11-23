@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -23,6 +24,9 @@ public class Category {
 
     @Column(name = "active_state", columnDefinition = "TINYINT default 1")
     private boolean activeState;
+
+    @OneToMany(mappedBy="categories")
+    private Set<IssueTitle> issueTitles;
 
     public void deactivate() {
         this.activeState = false;

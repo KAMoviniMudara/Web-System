@@ -6,11 +6,22 @@ import com.example.Web.System.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    private final CategoryRepository categoryRepository;
+
+    // Assuming autowired repository
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    public void CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    public Category findCategoryById(Long categoryId) {
+        // Implement logic to find Category by ID using the repository
+        return categoryRepository.findById(categoryId).orElse(null);
+    }
+
 
     @Autowired
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
@@ -35,5 +46,10 @@ public class CategoryServiceImpl implements CategoryService {
         } catch (Exception e) {
             return "Deactivation Failed";
         }
+    }
+
+    @Override
+    public Category findCategoryById(Category categoryID) {
+        return null;
     }
 }

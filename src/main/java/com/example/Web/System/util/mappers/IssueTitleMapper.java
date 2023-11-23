@@ -11,7 +11,7 @@ public interface IssueTitleMapper {
 
     IssueTitleMapper INSTANCE = Mappers.getMapper(IssueTitleMapper.class);
 
-    @Mapping(source = "categoryID", target = "categoryID") // Map the categoryId
+    @Mapping(source = "categories", target = "categories") // Map the categoryId
     IssueTitleDTO toDto(IssueTitle entity);
 
     IssueTitle toEntity(IssueTitleDTO dto);
