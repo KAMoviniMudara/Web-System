@@ -9,9 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -23,19 +28,20 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserDto userDto) {
-        logger.info("Received UserDto email: {}", userDto.getEmail());
-        logger.info("Received UserDto role: {}", userDto.getRole());
+    public ResponseEntity<Object> registerUser(@Valid @RequestBody UserDto userDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return handleValidationErrors(result);
+        }
 
         String userName = userService.addUser(userDto);
-        logger.info("User registered: {}", userName);
-
         return ResponseEntity.ok("Registration successful for user: " + userName);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginDto loginDto) {
-        logger.info("Received login request for email: {}", loginDto.getEmail());
+    public ResponseEntity<Object> loginUser(@Valid @RequestBody LoginDto loginDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return handleValidationErrors(result);
+        }
 
         LoginResponse loginResponse = userService.loginUser(loginDto);
         if (loginResponse.isStatus()) {
@@ -48,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserDto> getUserProfile(@AuthenticationPrincipal Principal principal) {
+    public ResponseEntity<Object> getUserProfile(@AuthenticationPrincipal Principal principal) {
         if (principal != null) {
             String userEmail = principal.getName();
             logger.info("Retrieved user profile for email: {}", userEmail);
@@ -59,5 +65,11 @@ public class UserController {
             logger.warn("User profile request without authenticated principal");
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    private ResponseEntity<Object> handleValidationErrors(BindingResult result) {
+        Map<String, String> errors = new HashMap<>();
+        result.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+        return ResponseEntity.badRequest().body(errors);
     }
 }

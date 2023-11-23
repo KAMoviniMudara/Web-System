@@ -1,8 +1,22 @@
 package com.example.Web.System.dto;
 
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class LoginDto {
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email format")
     private String email;
+
+    @NotBlank(message = "Password cannot be blank")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
+
+
+    @Pattern(regexp = "^(ADMIN|USER)$", message = "Role must be either ADMIN or USER")
     private String role;
 
     public LoginDto(String email, String password, String role) {

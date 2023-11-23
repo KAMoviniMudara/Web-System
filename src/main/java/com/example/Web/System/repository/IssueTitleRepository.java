@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 
 public interface IssueTitleRepository extends JpaRepository<IssueTitle, Long> {
-    Optional<IssueTitle> findByTitle(String title);
+    IssueTitle findByTitle(String title);
 }

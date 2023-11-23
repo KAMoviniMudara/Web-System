@@ -1,14 +1,14 @@
 package com.example.Web.System.service;
 
 import com.example.Web.System.dto.IssueTitleDTO;
+import com.example.Web.System.entity.IssueTitle;
 
 public interface IssueTitleService {
-    IssueTitleDTO addIssueTitle(IssueTitleDTO issueTitleDTO);
-    IssueTitleDTO updateIssueTitleByTitle(String title, IssueTitleDTO issueTitleDTO);
+    IssueTitle addIssueTitle(IssueTitle issueTitle);
+
+    IssueTitle updateIssueTitle(IssueTitle issueTitle);
+
     void deactivateIssueTitleByTitle(String title);
 
-    IssueTitleDTO updateIssueTitle(String title, IssueTitleDTO issueTitleDTO);
 
-
-    void deactivateIssueTitle(String title);
 }

@@ -4,15 +4,31 @@ package com.example.Web.System.dto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class UserDto {
     private static final Logger logger = LoggerFactory.getLogger(UserDto.class);
 
     private int userId;
-    private String userName;
-    private String email;
-    private String password;
-    private String role;
 
+    @NotBlank(message = "Username cannot be blank")
+    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
+    private String userName;
+
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email format")
+    private String email;
+
+    @NotBlank(message = "Password cannot be blank")
+    @Size(min = 6, max = 50, message = "Password must be between 6 and 50 characters")
+    private String password;
+
+    @NotBlank(message = "Role cannot be blank")
+    @Pattern(regexp = "^(ADMIN|USER)$", message = "Role must be either ADMIN or USER")
+    private String role;
     public UserDto(int userId, String userName, String email, String password, String role) {
         this.userId = userId;
         this.userName = userName;

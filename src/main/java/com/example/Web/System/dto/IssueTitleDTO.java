@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class IssueTitleDTO {
-    private int issueID;
+    private int issueTitleID;
     private String title;
     private CategoryDTO categoryID;
     private boolean activeState;

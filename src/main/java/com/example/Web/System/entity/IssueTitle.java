@@ -15,12 +15,12 @@ import javax.persistence.*;
 public class IssueTitle {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int issueID;
+    private int issueTitleID;
     private String title;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Category categoryID;
     @Column(name = "active_state", columnDefinition = "TINYINT default 1")
     private boolean activeState;
 

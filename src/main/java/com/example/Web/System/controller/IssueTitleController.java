@@ -5,29 +5,38 @@ import com.example.Web.System.service.IssueTitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.Web.System.entity.IssueTitle;
+import com.example.Web.System.service.IssueTitleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/issuetitles")
+@RequestMapping("/api/issue-titles")
 public class IssueTitleController {
 
+    private final IssueTitleService issueTitleService;
+
     @Autowired
-    private IssueTitleService issueTitleService;
+    public IssueTitleController(IssueTitleService issueTitleService) {
+        this.issueTitleService = issueTitleService;
+    }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addIssueTitle(@RequestBody IssueTitleDTO issueTitleDTO) {
-        issueTitleService.addIssueTitle(issueTitleDTO);
-        return ResponseEntity.ok("Issue title added successfully.");
+    public ResponseEntity<IssueTitle> addIssueTitle(@RequestBody IssueTitle issueTitle) {
+        IssueTitle addedIssueTitle = issueTitleService.addIssueTitle(issueTitle);
+        return ResponseEntity.ok(addedIssueTitle);
     }
 
-    @PutMapping("/update/{title}")
-    public ResponseEntity<String> updateIssueTitle(@PathVariable String title, @RequestBody IssueTitleDTO issueTitleDTO) {
-        issueTitleService.updateIssueTitleByTitle(title, issueTitleDTO);
-        return ResponseEntity.ok("Issue title updated successfully.");
+    @PutMapping("/update")
+    public ResponseEntity<IssueTitle> updateIssueTitle(@RequestBody IssueTitle issueTitle) {
+        IssueTitle updatedIssueTitle = issueTitleService.updateIssueTitle(issueTitle);
+        return ResponseEntity.ok(updatedIssueTitle);
     }
 
-    @PutMapping("/deactivate/{title}")
-    public ResponseEntity<String> deactivateIssueTitle(@PathVariable String title) {
+    @PostMapping("/deactivate")
+    public ResponseEntity<String> deactivateIssueTitle(@RequestBody String title) {
         issueTitleService.deactivateIssueTitleByTitle(title);
-        return ResponseEntity.ok("Issue title deactivated successfully.");
+        return ResponseEntity.ok("Issue title deactivated successfully");
     }
 }
