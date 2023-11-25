@@ -28,7 +28,6 @@ public class IssueTitleServiceImpl implements IssueTitleService {
         issueTitle.setActiveState(true);
 
         if (issueTitleDTO.getCategoryID() != null) {
-            // Fetch the category from the database by its ID
             Category category = categoryRepository.findById(issueTitleDTO.getCategoryID()).orElse(null);
             if (category != null) {
                 issueTitle.setCategory(category);
@@ -37,4 +36,46 @@ public class IssueTitleServiceImpl implements IssueTitleService {
 
         issueTitleRepository.save(issueTitle);
     }
+    @Override
+    public String deactivateIssueTitleByTitle(String title) {
+        try {
+            IssueTitle issueTitle = issueTitleRepository.findByTitle(title);
+            if (issueTitle == null) {
+                return "Title Not Found";
+            }
+            issueTitle.setActiveState(false);
+            issueTitleRepository.save(issueTitle);
+            return "Title Deactivated";
+        } catch (Exception e) {
+            return "Deactivation Failed";
+        }
+    }
+    @Override
+    public String updateIssueTitleByTitle(IssueTitleDTO updatedIssueTitleDTO) {
+        try {
+            IssueTitle issueTitle = issueTitleRepository.findByTitle(updatedIssueTitleDTO.getTitle());
+            if (issueTitle == null) {
+                return "Title Not Found";
+            }
+
+            issueTitle.setTitle(updatedIssueTitleDTO.getTitle());
+
+            if (updatedIssueTitleDTO.getCategoryID() != null) {
+                Category category = categoryRepository.findById(updatedIssueTitleDTO.getCategoryID()).orElse(null);
+                if (category != null) {
+                    issueTitle.setCategory(category);
+                }
+            }
+
+            issueTitle.setActiveState(true);
+
+            issueTitleRepository.save(issueTitle);
+            return "Title Updated";
+        } catch (Exception e) {
+            return "Update Failed";
+        }
+    }
+
+
+
 }

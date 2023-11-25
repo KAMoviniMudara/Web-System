@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @EnableJpaRepositories
 @Repository
 public interface IssueTitleRepository extends JpaRepository<IssueTitle , Long> {
-
+    IssueTitle findByTitle(String title);
 }

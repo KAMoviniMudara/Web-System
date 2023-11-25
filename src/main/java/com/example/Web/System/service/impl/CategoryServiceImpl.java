@@ -34,9 +34,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public String deactivateCategoryByName(String customerName) {
+    public String deactivateCategoryByName(String categoryName) {
         try {
-            Category category = categoryRepository.findByCategoryName(customerName);
+            Category category = categoryRepository.findByCategoryName(categoryName);
             if (category == null) {
                 return "Category Not Found";
             }
