@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
@@ -31,12 +30,12 @@ public class CategoryController {
         if (result.hasErrors()) {
             String errorMessages = extractErrorMessages(result);
             logger.error("Validation errors in categoryDTO: {}", errorMessages);
-            return ResponseEntity.badRequest().body(errorMessages);
+            return ResponseEntity.badRequest().body("Validation errors: " + errorMessages);
         }
 
         Category category = mapDtoToEntity(categoryDTO);
         Category addedCategory = categoryService.addCategory(category);
-        return ResponseEntity.ok(addedCategory);
+        return ResponseEntity.ok("Category added successfully: " + addedCategory.getCategoryName());
     }
 
     @PatchMapping(path = "/deactivate-category-by-name")
@@ -44,16 +43,16 @@ public class CategoryController {
         if (result.hasErrors()) {
             String errorMessages = extractErrorMessages(result);
             logger.error("Validation errors in categoryDTO: {}", errorMessages);
-            return ResponseEntity.badRequest().body(errorMessages);
+            return ResponseEntity.badRequest().body("Validation errors: " + errorMessages);
         }
 
         try {
             String categoryName = categoryDTO.getCategoryName();
             String deactivateStatus = categoryService.deactivateCategoryByName(categoryName);
-            return ResponseEntity.ok(deactivateStatus);
+            return ResponseEntity.ok("Category '" + categoryName + "' deactivated: " + deactivateStatus);
         } catch (Exception e) {
             logger.error("Error deactivating category: {}", e.getMessage());
-            return ResponseEntity.badRequest().body("Error deactivating category");
+            return ResponseEntity.badRequest().body("Error deactivating category: " + e.getMessage());
         }
     }
 

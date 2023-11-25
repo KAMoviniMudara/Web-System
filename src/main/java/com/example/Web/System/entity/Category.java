@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -15,8 +14,8 @@ import java.util.Set;
 @Data
 public class Category {
     @Id
-    @Column(name = "category_id", length = 45)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private Long categoryID;
 
     @Column(name = "category_name", length = 100, nullable = false)
@@ -25,11 +24,11 @@ public class Category {
     @Column(name = "active_state", columnDefinition = "TINYINT default 1")
     private boolean activeState;
 
-    @OneToMany(mappedBy="categories")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<IssueTitle> issueTitles;
 
     public void deactivate() {
         this.activeState = false;
     }
-
 }
+
