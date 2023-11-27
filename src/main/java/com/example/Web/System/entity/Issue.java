@@ -33,8 +33,10 @@ public class Issue {
     @Enumerated(EnumType.STRING)
     private LocationEnum location;
 
-    private String date;
+    private String startDate;
     private String startTime;
+
+    private String endDate;
     private String endTime;
 
     @ManyToOne
@@ -54,11 +56,11 @@ public class Issue {
     @PrePersist
     @PreUpdate
     private void calculateDuration() {
-        if (date != null && startTime != null && endTime != null) {
+        if (startDate != null && startTime != null && endDate != null && endTime != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
-                Date start = dateFormat.parse(date + " " + startTime);
-                Date end = dateFormat.parse(date + " " + endTime);
+                Date start = dateFormat.parse(startDate + " " + startTime);
+                Date end = dateFormat.parse(endDate + " " + endTime);
 
                 long durationMillis = end.getTime() - start.getTime();
 
