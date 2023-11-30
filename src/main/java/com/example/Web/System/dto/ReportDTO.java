@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ReportDTO {
+    private String reportName;
     private int reportId;
     private String startDate;
     private String endDate;
-    private String reportName;
+
 
 
 

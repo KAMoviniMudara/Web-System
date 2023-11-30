@@ -17,14 +17,15 @@ public class Report {
     @Column(name = "report_id", length = 45)
     private int reportId;
 
+    @Column(name = "report_name", length = 100)
+    private String reportName;
+
     @Column(name = "start_date")
     private String startDate;
 
     @Column(name = "end_date")
     private String endDate;
 
-    @Column(name = "report_name", length = 100, nullable = false)
-    private String reportName;
 
     public int getReportId() {
         return reportId;
