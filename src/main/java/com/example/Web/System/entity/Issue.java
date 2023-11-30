@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,15 +54,17 @@ public class Issue {
 
     @PrePersist
     @PreUpdate
-    private void calculateDuration() {
+    private void calculateDurationInHours() {
         if (startDate != null && startTime != null && endDate != null && endTime != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
                 Date start = dateFormat.parse(startDate + " " + startTime);
                 Date end = dateFormat.parse(endDate + " " + endTime);
 
-                long duration = end.getTime() - start.getTime();
-                durationMillis = duration;
+                long durationInMillis = end.getTime() - start.getTime();
+                long durationInHours = durationInMillis / (60 * 60 * 1000); // milliseconds to hours
+
+                durationMillis = durationInHours;
             } catch (ParseException e) {
                 e.printStackTrace();
             }

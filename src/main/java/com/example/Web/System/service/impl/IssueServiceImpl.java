@@ -5,7 +5,6 @@ import com.example.Web.System.entity.Category;
 import com.example.Web.System.entity.Issue;
 import com.example.Web.System.entity.IssueTitle;
 import com.example.Web.System.entity.User;
-import com.example.Web.System.entity.enums.StatusEnum;
 import com.example.Web.System.repository.CategoryRepository;
 import com.example.Web.System.repository.IssueRepository;
 import com.example.Web.System.repository.IssueTitleRepository;
@@ -45,6 +44,7 @@ public class IssueServiceImpl implements IssueService {
         Category category = categoryRepository.findById((long) issueDTO.getCategoryID()).orElse(null);
         IssueTitle issueTitle = issueTitleRepository.findById((long) issueDTO.getIssueTitleID()).orElse(null);
         User informedByUser = userRepo.findById(issueDTO.getInformedByUserID()).orElse(null);
+        User actionTakenByUser = userRepo.findById(issueDTO.getActionTakenByUserID()).orElse(null);
 
         issue.setCategory(category);
         issue.setIssueTitle(issueTitle);
@@ -54,7 +54,9 @@ public class IssueServiceImpl implements IssueService {
         issue.setStartTime(issueDTO.getStartTime());
         issue.setEndTime(issueDTO.getEndTime());
         issue.setInformedByUser(informedByUser);
+        issue.setActionTakenByUser(actionTakenByUser);
         issue.setDurationMillis(issueDTO.getDurationMillis());
+        issue.setStatus(issueDTO.getStatus());
 
         issueRepository.save(issue);
         LOGGER.info("Issue added successfully");
@@ -86,7 +88,9 @@ public class IssueServiceImpl implements IssueService {
         issueDTO.setStartTime(issue.getStartTime());
         issueDTO.setEndTime(issue.getEndTime());
         issueDTO.setInformedByUserID(issue.getInformedByUser().getUserId());
+        issueDTO.setActionTakenByUserID(issue.getActionTakenByUser().getUserId());
         issueDTO.setDurationMillis(issue.getDurationMillis());
+        issueDTO.setStatus(issue.getStatus());
 
         return issueDTO;
     }
