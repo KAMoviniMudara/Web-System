@@ -48,7 +48,7 @@ public class Issue {
     private User actionTakenByUser;
 
     @Column(name = "duration")
-    private Time duration;
+    private Long durationMillis;
 
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
@@ -62,9 +62,8 @@ public class Issue {
                 Date start = dateFormat.parse(startDate + " " + startTime);
                 Date end = dateFormat.parse(endDate + " " + endTime);
 
-                long durationMillis = end.getTime() - start.getTime();
-
-                duration = new Time(durationMillis);
+                long duration = end.getTime() - start.getTime();
+                durationMillis = duration;
             } catch (ParseException e) {
                 e.printStackTrace();
             }

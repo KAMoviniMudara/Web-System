@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -50,20 +50,101 @@ public class IssueDTO {
     @NotNull(message = "Status cannot be null")
     private StatusEnum status;
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+
+    public int getIssueID() {
+        return issueID;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setIssueID(int issueID) {
+        this.issueID = issueID;
+    }
+
+    public int getCategoryID() {
+        return categoryID;
+    }
+
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
+    }
+
+    public int getIssueTitleID() {
+        return issueTitleID;
+    }
+
+    public void setIssueTitleID(int issueTitleID) {
+        this.issueTitleID = issueTitleID;
+    }
+
+    public LocationEnum getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationEnum location) {
+        this.location = location;
     }
 
     public String getStartDate() {
         return startDate;
     }
 
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
     public String getEndDate() {
         return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public int getInformedByUserID() {
+        return informedByUserID;
+    }
+
+    public void setInformedByUserID(int informedByUserID) {
+        this.informedByUserID = informedByUserID;
+    }
+
+    public int getActionTakenByUserID() {
+        return actionTakenByUserID;
+    }
+
+    public void setActionTakenByUserID(int actionTakenByUserID) {
+        this.actionTakenByUserID = actionTakenByUserID;
+    }
+
+    public long getDurationMillis() {
+        return durationMillis;
+    }
+
+    public void setDurationMillis(long durationMillis) {
+        this.durationMillis = durationMillis;
+    }
+
+    public StatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEnum status) {
+        this.status = status;
     }
 
     public void calculateDuration() {

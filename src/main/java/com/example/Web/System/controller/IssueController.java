@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.Web.System.dto.IssueDTO;
-import com.example.Web.System.dto.ResolvedIssueDTO;
 import com.example.Web.System.service.IssueService;
 import java.util.List;
 
@@ -47,15 +46,4 @@ public class IssueController {
         }
     }
 
-    @PostMapping("/add-resolved")
-    public ResponseEntity<String> addResolvedIssue(@RequestBody ResolvedIssueDTO resolvedIssueDTO) {
-        try {
-            issueService.addResolvedIssue(resolvedIssueDTO);
-            LOGGER.info("Resolved Issue added successfully");
-            return new ResponseEntity<>("Resolved Issue added successfully", HttpStatus.CREATED);
-        } catch (Exception e) {
-            LOGGER.error("Error occurred while adding resolved issue: {}", e.getMessage());
-            return new ResponseEntity<>("Failed to add resolved issue", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

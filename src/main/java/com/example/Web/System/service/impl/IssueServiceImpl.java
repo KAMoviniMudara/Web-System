@@ -1,7 +1,6 @@
 package com.example.Web.System.service.impl;
 
 import com.example.Web.System.dto.IssueDTO;
-import com.example.Web.System.dto.ResolvedIssueDTO;
 import com.example.Web.System.entity.Category;
 import com.example.Web.System.entity.Issue;
 import com.example.Web.System.entity.IssueTitle;
@@ -17,10 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,8 +50,11 @@ public class IssueServiceImpl implements IssueService {
         issue.setIssueTitle(issueTitle);
         issue.setLocation(issueDTO.getLocation());
         issue.setStartDate(issueDTO.getStartDate());
+        issue.setEndDate(issueDTO.getEndDate());
         issue.setStartTime(issueDTO.getStartTime());
+        issue.setEndTime(issueDTO.getEndTime());
         issue.setInformedByUser(informedByUser);
+        issue.setDurationMillis(issueDTO.getDurationMillis());
 
         issueRepository.save(issue);
         LOGGER.info("Issue added successfully");
@@ -69,76 +67,6 @@ public class IssueServiceImpl implements IssueService {
         List<Issue> issues = issueRepository.findAll();
         LOGGER.info("Retrieved all issues");
         return mapIssueListToIssueDTOList(issues);
-    }
-
-    @Override
-    public void addResolvedIssue(IssueDTO resolvedIssueDTO) {
-        LOGGER.info("Adding resolved issue...");
-        Issue resolvedIssue = new Issue();
-        resolvedIssue.setIssueID(resolvedIssueDTO.getIssueID());
-
-        Category category = categoryRepository.findById((long) resolvedIssueDTO.getCategoryID()).orElse(null);
-        IssueTitle issueTitle = issueTitleRepository.findById((long) resolvedIssueDTO.getIssueTitleID()).orElse(null);
-        User actionTakenByUser = userRepo.findById(resolvedIssueDTO.getActionTakenByUserID()).orElse(null);
-
-        resolvedIssue.setCategory(category);
-        resolvedIssue.setIssueTitle(issueTitle);
-        resolvedIssue.setStartDate(resolvedIssueDTO.getStartDate());
-        resolvedIssue.setEndDate(resolvedIssueDTO.getEndDate());
-        resolvedIssue.setStartTime(resolvedIssueDTO.getStartTime());
-        resolvedIssue.setEndTime(resolvedIssueDTO.getEndTime());
-        resolvedIssue.setActionTakenByUser(actionTakenByUser);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date startTime = dateFormat.parse(resolvedIssueDTO.getStartTime());
-            Date endTime = dateFormat.parse(resolvedIssueDTO.getEndTime());
-            long durationMillis = endTime.getTime() - startTime.getTime();
-            resolvedIssue.setDuration(new Time(durationMillis));
-        } catch (ParseException e) {
-            LOGGER.error("Error parsing date: {}", e.getMessage());
-            e.printStackTrace();
-        }
-
-        resolvedIssue.setStatus(resolvedIssueDTO.getStatus() != null ? resolvedIssueDTO.getStatus() : StatusEnum.RESOLVED);
-
-        issueRepository.save(resolvedIssue);
-        LOGGER.info("Resolved issue added successfully");
-    }
-
-    @Override
-    public void addResolvedIssue(ResolvedIssueDTO resolvedIssueDTO) {
-        LOGGER.info("Adding resolved issue...");
-        Issue resolvedIssue = new Issue();
-        resolvedIssue.setIssueID(resolvedIssueDTO.getIssueID());
-
-        Category category = categoryRepository.findById((long) resolvedIssueDTO.getCategoryID()).orElse(null);
-        IssueTitle issueTitle = issueTitleRepository.findById((long) resolvedIssueDTO.getIssueTitleID()).orElse(null);
-        User actionTakenByUser = userRepo.findById(resolvedIssueDTO.getActionTakenByUserID()).orElse(null);
-
-        resolvedIssue.setCategory(category);
-        resolvedIssue.setIssueTitle(issueTitle);
-        resolvedIssue.setStartDate(resolvedIssueDTO.getStartDate());
-        resolvedIssue.setEndDate(resolvedIssueDTO.getEndDate());
-        resolvedIssue.setStartTime(resolvedIssueDTO.getStartTime());
-        resolvedIssue.setEndTime(resolvedIssueDTO.getEndTime());
-        resolvedIssue.setActionTakenByUser(actionTakenByUser);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date startTime = dateFormat.parse(resolvedIssueDTO.getStartTime());
-            Date endTime = dateFormat.parse(resolvedIssueDTO.getEndTime());
-            long durationMillis = endTime.getTime() - startTime.getTime();
-            resolvedIssue.setDuration(new Time(durationMillis));
-        } catch (ParseException e) {
-            LOGGER.error("Error parsing date: {}", e.getMessage());
-            e.printStackTrace();
-        }
-
-        resolvedIssue.setStatus(resolvedIssueDTO.getStatus() != null ? resolvedIssueDTO.getStatus() : StatusEnum.RESOLVED);
-
-        issueRepository.save(resolvedIssue);
-        LOGGER.info("Resolved issue added successfully");
     }
 
     private List<IssueDTO> mapIssueListToIssueDTOList(List<Issue> issues) {
@@ -154,8 +82,11 @@ public class IssueServiceImpl implements IssueService {
         issueDTO.setIssueTitleID(Math.toIntExact(issue.getIssueTitle().getIssueTitleID()));
         issueDTO.setLocation(issue.getLocation());
         issueDTO.setStartDate(issue.getStartDate());
+        issueDTO.setEndDate(issue.getEndDate());
         issueDTO.setStartTime(issue.getStartTime());
+        issueDTO.setEndTime(issue.getEndTime());
         issueDTO.setInformedByUserID(issue.getInformedByUser().getUserId());
+        issueDTO.setDurationMillis(issue.getDurationMillis());
 
         return issueDTO;
     }
