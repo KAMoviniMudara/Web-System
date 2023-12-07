@@ -10,18 +10,19 @@ import com.example.Web.System.repository.IssueRepository;
 import com.example.Web.System.repository.IssueTitleRepository;
 import com.example.Web.System.repository.UserRepo;
 import com.example.Web.System.service.IssueService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class IssueServiceImpl implements IssueService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(IssueServiceImpl.class);
-
     private final IssueRepository issueRepository;
     private final CategoryRepository categoryRepository;
     private final IssueTitleRepository issueTitleRepository;
@@ -38,9 +39,7 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     public IssueDTO addIssue(IssueDTO issueDTO) {
-        LOGGER.info("Adding new issue...");
         Issue issue = new Issue();
-
         Category category = categoryRepository.findById((long) issueDTO.getCategoryID()).orElse(null);
         IssueTitle issueTitle = issueTitleRepository.findById((long) issueDTO.getIssueTitleID()).orElse(null);
         User informedByUser = userRepo.findById(issueDTO.getInformedByUserID()).orElse(null);
@@ -59,16 +58,18 @@ public class IssueServiceImpl implements IssueService {
         issue.setStatus(issueDTO.getStatus());
 
         issueRepository.save(issue);
-        LOGGER.info("Issue added successfully");
         return issueDTO;
     }
 
     @Override
-    public List<IssueDTO> getAllIssues() {
-        LOGGER.info("Retrieving all issues...");
-        List<Issue> issues = issueRepository.findAll();
-        LOGGER.info("Retrieved all issues");
-        return mapIssueListToIssueDTOList(issues);
+    public ByteArrayOutputStream generatePDFByCategoryAndDateRange(Long categoryId, String startDate, String endDate) throws DocumentException {
+        List<Issue> issues = issueRepository.findAllByCategoryCategoryIDAndStartDateBetween(categoryId, startDate, endDate);
+        return generatePDFFromIssueList(issues);
+    }
+
+    @Override
+    public List<IssueDTO> getAllIssuesByCategoryID(Long categoryID) {
+        return null;
     }
 
     private List<IssueDTO> mapIssueListToIssueDTOList(List<Issue> issues) {
@@ -80,7 +81,7 @@ public class IssueServiceImpl implements IssueService {
     private IssueDTO mapIssueToIssueDTO(Issue issue) {
         IssueDTO issueDTO = new IssueDTO();
         issueDTO.setIssueID(issue.getIssueID());
-        issueDTO.setCategoryID(Math.toIntExact(issue.getCategory().getCategoryID()));
+        issueDTO.setCategoryID((int) Math.toIntExact(issue.getCategory().getCategoryID()));
         issueDTO.setIssueTitleID(Math.toIntExact(issue.getIssueTitle().getIssueTitleID()));
         issueDTO.setLocation(issue.getLocation());
         issueDTO.setStartDate(issue.getStartDate());
@@ -93,5 +94,23 @@ public class IssueServiceImpl implements IssueService {
         issueDTO.setStatus(issue.getStatus());
 
         return issueDTO;
+    }
+
+    private ByteArrayOutputStream generatePDFFromIssueList(List<Issue> issues) throws DocumentException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Document document = new Document();
+        PdfWriter.getInstance(document, outputStream);
+        document.open();
+
+        for (Issue issue : issues) {
+            document.add(new Paragraph("Issue ID: " + issue.getIssueID()));
+            document.add(new Paragraph("Category ID: " + issue.getCategory().getCategoryID()));
+            document.add(new Paragraph("Issue Title ID: " + issue.getIssueTitle().getIssueTitleID()));
+            // Add other issue details as needed...
+            document.add(new Paragraph("---------------------------------------------"));
+        }
+
+        document.close();
+        return outputStream;
     }
 }

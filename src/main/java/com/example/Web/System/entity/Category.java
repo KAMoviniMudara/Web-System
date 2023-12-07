@@ -26,9 +26,4 @@ public class Category {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<IssueTitle> issueTitles;
-
-    public void deactivate() {
-        this.activeState = false;
-    }
 }
-

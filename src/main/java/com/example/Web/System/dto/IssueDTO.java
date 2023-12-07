@@ -49,3 +49,4 @@ public class IssueDTO {
     @NotNull(message = "Status cannot be null")
     private StatusEnum status;
 }
+

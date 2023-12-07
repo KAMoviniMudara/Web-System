@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "report")
@@ -12,43 +13,29 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 public class Report {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "report_id", length = 45)
-    private int reportId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long reportId;
 
-    @Column(name = "report_name", length = 100)
     private String reportName;
+    private Date startDate;
+    private Date endDate;
 
-    @Column(name = "start_date")
-    private String startDate;
+    public Category getCategory() {
+        return category;
+    }
 
-    @Column(name = "end_date")
-    private String endDate;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-
-    public int getReportId() {
+    public Long getReportId() {
         return reportId;
     }
 
-    public void setReportId(int reportId) {
+    public void setReportId(Long reportId) {
         this.reportId = reportId;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
     }
 
     public String getReportName() {
@@ -57,5 +44,32 @@ public class Report {
 
     public void setReportName(String reportName) {
         this.reportName = reportName;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+
+    public Category getCategoryID() {
+        return null;
     }
 }

@@ -9,17 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    // Assuming autowired repository
     private CategoryRepository categoryRepository;
 
     @Autowired
     public void CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-    }
-
-    public Category findCategoryById(Long categoryId) {
-        // Implement logic to find Category by ID using the repository
-        return categoryRepository.findById(categoryId).orElse(null);
     }
 
 
@@ -48,8 +42,4 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
-    @Override
-    public Category findCategoryById(Category categoryID) {
-        return null;
-    }
 }
