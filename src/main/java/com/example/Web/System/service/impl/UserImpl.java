@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserImpl.class);
@@ -71,6 +74,11 @@ public class UserImpl implements UserService {
         }
     }
 
+    @Override
+    public List<String> getAllUserNames() {
+        List<User> users = userRepo.findAll();
+        return users.stream().map(User::getUserName).collect(Collectors.toList());
+    }
     @Override
     public UserDto getUserByEmail(String userEmail) {
         return null;

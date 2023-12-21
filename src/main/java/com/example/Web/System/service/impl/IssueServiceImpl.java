@@ -104,9 +104,9 @@ public class IssueServiceImpl implements IssueService {
 
         for (Issue issue : issues) {
             document.add(new Paragraph("Issue ID: " + issue.getIssueID()));
-            document.add(new Paragraph("Category ID: " + issue.getCategory().getCategoryID()));
-            document.add(new Paragraph("Issue Title ID: " + issue.getIssueTitle().getIssueTitleID()));
-            // Add other issue details as needed...
+            document.add(new Paragraph("Category Name: " + issue.getCategory().getCategoryName()));
+            document.add(new Paragraph("Issue Title: " + issue.getIssueTitle().getTitle()));
+
             document.add(new Paragraph("---------------------------------------------"));
         }
 

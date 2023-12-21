@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -34,6 +35,8 @@ public class CategoryController {
         }
 
         Category category = mapDtoToEntity(categoryDTO);
+        category.setActiveState(true);
+
         Category addedCategory = categoryService.addCategory(category);
         return ResponseEntity.ok("Category added successfully: " + addedCategory.getCategoryName());
     }
@@ -55,11 +58,16 @@ public class CategoryController {
             return ResponseEntity.badRequest().body("Error deactivating category: " + e.getMessage());
         }
     }
+    @GetMapping("/categoryNames")
+    public ResponseEntity<List<String>> getAllCategoryNames() {
+        List<String> categoryNames = categoryService.getAllCategoryNames();
+        return ResponseEntity.ok(categoryNames);
+    }
 
     private Category mapDtoToEntity(CategoryDTO categoryDTO) {
         Category category = new Category();
         category.setCategoryName(categoryDTO.getCategoryName());
-        category.setActiveState(categoryDTO.isActiveState());
+        category.setActiveState(true);
         return category;
     }
 

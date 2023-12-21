@@ -6,6 +6,9 @@ import com.example.Web.System.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -42,4 +45,11 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    @Override
+    public List<String> getAllCategoryNames() {
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream()
+                .map(Category::getCategoryName)
+                .collect(Collectors.toList());
+    }
 }

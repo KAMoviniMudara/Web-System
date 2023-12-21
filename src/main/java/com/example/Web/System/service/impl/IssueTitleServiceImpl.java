@@ -9,6 +9,9 @@ import com.example.Web.System.service.IssueTitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class IssueTitleServiceImpl implements IssueTitleService {
 
@@ -75,7 +78,13 @@ public class IssueTitleServiceImpl implements IssueTitleService {
             return "Update Failed";
         }
     }
-
+    @Override
+    public List<String> getAllTitles() {
+        List<IssueTitle> issueTitles = issueTitleRepository.findAll();
+        return issueTitles.stream()
+                .map(IssueTitle::getTitle)
+                .collect(Collectors.toList());
+    }
 
 
 }

@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/issue-titles")
@@ -77,7 +78,10 @@ public class IssueTitleController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating issue title: " + e.getMessage());
         }
     }
-
+    @GetMapping("/titles")
+    public List<String> getAllTitles() {
+        return issueTitleService.getAllTitles();
+    }
 
     private String extractErrorMessages(BindingResult result) {
         StringBuilder errorMessage = new StringBuilder();

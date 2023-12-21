@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -66,6 +67,12 @@ public class UserController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+    @GetMapping("/userNames")
+    public ResponseEntity<Object> getAllUserNames() {
+        List<String> userNames = userService.getAllUserNames();
+        return ResponseEntity.ok(userNames);
+    }
+
 
     private ResponseEntity<Object> handleValidationErrors(BindingResult result) {
         Map<String, String> errors = new HashMap<>();

@@ -26,7 +26,7 @@ public class UserDto {
     @Size(min = 6, max = 50, message = "Password must be between 6 and 50 characters")
     private String password;
 
-    @NotBlank(message = "Role cannot be blank")
+
     @Pattern(regexp = "^(ADMIN|USER)$", message = "Role must be either ADMIN or USER")
     private String role;
     public UserDto(int userId, String userName, String email, String password, String role) {
